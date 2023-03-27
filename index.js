@@ -145,4 +145,4 @@ const keyPress = (e) => {
 // Event Listeners
 
 keysBtn.addEventListener("click", keyPress);
-clearBtn.addEventListener("click", clearScreen);
+// clearBtn.addEventListener("click", clearScreen);
