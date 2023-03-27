@@ -1,5 +1,12 @@
+// html elements
+const screenResultEl = document.querySelector(".screen-result");
+const operand1El = document.querySelector(".op1");
+const operand2El = document.querySelector(".op2");
+const operatorEl = document.querySelector(".opr");
 // Variables Decleration
+let count = 0;
 let result = "";
+let operation = "";
 let operand1 = "",
   operand2 = "";
 let operator;
@@ -10,17 +17,48 @@ const screenOperationText = document.querySelector(".screen-operation");
 // Btn-selectors
 const keysBtn = document.querySelector(".keypad");
 
-// Functions
+// Display Functions
+
+const displayOperation = () => {
+  operand1El.textContent = operation;
+};
+//displayInput
+
+const displayResult = (ip) => {
+  screenResultEl.textContent = ip;
+};
+
 //Assign Operator
 const assignOperator = (op) => {
   if (op.textContent === "=") {
-    console.log("Equal to");
+    // operand1 = result;
+    displayOperation();
     calculate();
+    displayResult(result);
+    return;
+  }
+  console.log(result !== "");
+  if (result !== "") {
+    console.log(result);
+    operand1 = result;
+    operand2 = "";
+    console.log(operand1 + operator);
+    operator = op.textContent;
+
+    operation = operand1 + operator;
+    operator = op.textContent;
+    displayOperation();
+    currentOperand = 2;
+
+    result = "";
+    displayResult(result);
     return;
   }
   operator = op.textContent;
+  operation = operation + operator;
+  console.log(operation);
+  displayOperation();
   currentOperand = 2;
-  console.log(operator);
 };
 
 //Assign Operand
@@ -28,11 +66,14 @@ const assignOperator = (op) => {
 const assignOperand = (input) => {
   if (currentOperand === 1) {
     operand1 = operand1 + input.textContent;
-    console.log("OP1", operand1);
+    operation = operation + input.textContent;
+    displayResult(operand1);
   }
   if (currentOperand == 2) {
     operand2 = operand2 + input.textContent;
-    console.log("OP2", operand2);
+    operation = operation + input.textContent;
+
+    displayResult(operand2);
   }
 };
 // Delete a digit
@@ -43,22 +84,20 @@ const eraseScreen = () => {};
 
 // Calculate - Perform Operation
 const calculate = () => {
-  result = `${Number(operand1)} ${operator} ${Number(operand2)}`;
-
   let op1 = Number(operand1);
   let op2 = Number(operand2);
   switch (operator) {
     case "+":
-      console.log("This time add operation");
+      result = Number(operand1) + Number(operand2);
       break;
     case "-":
-      console.log("Subtraction this time");
+      result = Number(operand1) - Number(operand2);
       break;
     case "*":
-      multiply(op1, op2);
+      result = Number(operand1) * Number(operand2);
       break;
     case "/":
-      divide(op1, op2);
+      result = Number(operand1) / Number(operand2);
       break;
     default:
       console.log("Default");
