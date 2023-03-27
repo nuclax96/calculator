@@ -3,6 +3,7 @@ const screenResultEl = document.querySelector(".screen-result");
 const operand1El = document.querySelector(".op1");
 const operand2El = document.querySelector(".op2");
 const operatorEl = document.querySelector(".opr");
+const clearBtn = document.querySelector(".clear");
 // Variables Decleration
 let count = 0;
 let result = "";
@@ -80,7 +81,16 @@ const assignOperand = (input) => {
 const deleteDigit = () => {};
 
 // Reset Screen
-const eraseScreen = () => {};
+const clearScreen = () => {
+  result = "";
+  operation = "";
+  operand1 = "";
+  operand2 = "";
+  operator = "";
+  currentOperand = 1;
+  displayOperation();
+  displayResult(0);
+};
 
 // Calculate - Perform Operation
 const calculate = () => {
@@ -108,6 +118,13 @@ const calculate = () => {
 
 const handleInput = (currInput) => {
   const inputType = currInput.target;
+  const classes = Array.from(inputType.classList);
+  console.log(classes);
+  if (classes.includes("clear")) {
+    console.log("Hello");
+    clearScreen();
+    return;
+  }
   if (inputType.dataset.value == "operator") {
     assignOperator(inputType);
   } else {
@@ -128,3 +145,4 @@ const keyPress = (e) => {
 // Event Listeners
 
 keysBtn.addEventListener("click", keyPress);
+clearBtn.addEventListener("click", clearScreen);
