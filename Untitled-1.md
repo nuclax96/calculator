@@ -7,3 +7,8 @@ To-Do:
 2. Add functionality for Root ,inverse, negation , CE.
 
 3. Clean the code.
+
+4. Delete Functionality not working correctly for 2nd operand.
+   Figure out the issue .
+   Mainly dataset value is operator is the issue with delete button
+   Issue in calculate fuction()

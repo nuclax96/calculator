@@ -21,6 +21,14 @@ const keysBtn = document.querySelector(".keypad");
 // Display Functions
 
 const displayOperation = () => {
+  if (!operand1 && operator == "=") {
+    operand1El.textContent = "0 =";
+    console.log("Empty");
+    return;
+  }
+  if (operation.includes("Delete")) {
+    return;
+  }
   operand1El.textContent = operation;
 };
 //displayInput
@@ -32,32 +40,29 @@ const displayResult = (ip) => {
 //Assign Operator
 const assignOperator = (op) => {
   if (op.textContent === "=") {
+    operator = op.textContent;
+
     // operand1 = result;
     displayOperation();
     calculate();
     displayResult(result);
     return;
   }
-  console.log(result !== "");
   if (result !== "") {
-    console.log(result);
     operand1 = result;
     operand2 = "";
     console.log(operand1 + operator);
     operator = op.textContent;
-
     operation = operand1 + operator;
     operator = op.textContent;
     displayOperation();
     currentOperand = 2;
-
     result = "";
     displayResult(result);
     return;
   }
   operator = op.textContent;
   operation = operation + operator;
-  console.log(operation);
   displayOperation();
   currentOperand = 2;
 };
@@ -78,7 +83,17 @@ const assignOperand = (input) => {
   }
 };
 // Delete a digit
-const deleteDigit = () => {};
+const deleteDigit = () => {
+  if (currentOperand === 1) {
+    console.log(operand1);
+    operand1 = operand1.slice(0, operand1.length - 1);
+    console.log(operand1);
+    displayResult(operand1);
+  } else {
+    operand2 = operand2.slice(0, operand2.length - 1);
+    displayResult(operand2);
+  }
+};
 
 // Reset Screen
 const clearScreen = () => {
@@ -96,6 +111,7 @@ const clearScreen = () => {
 const calculate = () => {
   let op1 = Number(operand1);
   let op2 = Number(operand2);
+  console.log(operator);
   switch (operator) {
     case "+":
       result = Number(operand1) + Number(operand2);
@@ -119,9 +135,10 @@ const calculate = () => {
 const handleInput = (currInput) => {
   const inputType = currInput.target;
   const classes = Array.from(inputType.classList);
-  console.log(classes);
+  if (classes.includes("delete")) {
+    deleteDigit();
+  }
   if (classes.includes("clear")) {
-    console.log("Hello");
     clearScreen();
     return;
   }
