@@ -1,11 +1,10 @@
 // html elements
-const screenResultEl = document.querySelector(".screen-result");
+const screenResultEl = document.querySelector(".screen-2");
 const operand1El = document.querySelector(".op1");
 const operand2El = document.querySelector(".op2");
 const operatorEl = document.querySelector(".opr");
 const clearBtn = document.querySelector(".clear");
 // Variables Decleration
-let count = 0;
 let result = "";
 let operation = "";
 let operand1 = "",
@@ -13,18 +12,19 @@ let operand1 = "",
 let operator;
 let currentOperand = 1;
 // Query Selectors
-const screenOperationText = document.querySelector(".screen-operation");
+
+const screenOperationTextEl = document.querySelector(".screen-1-operation");
 
 // Btn-selectors
 const keysBtn = document.querySelector(".keypad");
 
 // Display Functions
-
+//Display operations on screen-1
 const displayOperation = () => {
   operand1El.textContent = operation;
 };
 //displayInput
-
+//Display Screen-2 results
 const displayResult = (ip) => {
   screenResultEl.textContent = ip;
 };
@@ -92,22 +92,48 @@ const clearScreen = () => {
   displayResult(0);
 };
 
-// Calculate - Perform Operation
-const calculate = () => {
+// Mathematical Functions
+const add = (operand1, operand2) => {
   let op1 = Number(operand1);
   let op2 = Number(operand2);
+
+  return op1 + op2;
+};
+
+const subtract = (operand1, operand2) => {
+  let op1 = Number(operand1);
+  let op2 = Number(operand2);
+
+  return op1 - op2;
+};
+
+const multiply = (operand1, operand2) => {
+  let op1 = Number(operand1);
+  let op2 = Number(operand2);
+
+  return op1 * op2;
+};
+
+const divide = (operand1, operand2) => {
+  let op1 = Number(operand1);
+  let op2 = Number(operand2);
+
+  return op1 / op2;
+};
+// Calculate - Perform Operation
+const calculate = () => {
   switch (operator) {
     case "+":
-      result = Number(operand1) + Number(operand2);
+      result = add(operand1, operand2);
       break;
     case "-":
-      result = Number(operand1) - Number(operand2);
+      result = subtract(operand1, operand2);
       break;
     case "*":
-      result = Number(operand1) * Number(operand2);
+      result = multiply(operand1, operand2);
       break;
     case "/":
-      result = Number(operand1) / Number(operand2);
+      result = divide(operand1, operand2);
       break;
     default:
       console.log("Default");
@@ -134,8 +160,12 @@ const handleInput = (currInput) => {
 
 // Key Press
 
-const keyPress = (e) => {
-  const input = e.target.textContent;
+const keyPressHandler = (e) => {
+  //   const input = e.target.textContent;
+  // if (e.target.classList.includes('root'))
+  // {
+  //     console.log('Root');
+  //     }
   if (e.target.classList[0] === "keypad") {
     return;
   }
@@ -144,5 +174,5 @@ const keyPress = (e) => {
 
 // Event Listeners
 
-keysBtn.addEventListener("click", keyPress);
+keysBtn.addEventListener("click", keyPressHandler);
 // clearBtn.addEventListener("click", clearScreen);
