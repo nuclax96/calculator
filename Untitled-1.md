@@ -6,4 +6,4 @@ To-Do:
 
 2. Add functionality for Root ,inverse, negation , CE.
 
-3. Clean the code.
+3. Clean the code. ---Done

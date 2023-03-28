@@ -20,44 +20,54 @@ const keysBtn = document.querySelector(".keypad");
 
 // Display Functions
 //Display operations on screen-1
-const displayOperation = () => {
-  operand1El.textContent = operation;
+//multipleOperationInd is there when more than 1 operations are being performed
+const displayOperation = (multipleOperationInd = 0) => {
+  if (multipleOperationInd == 1) {
+    console.log(result);
+    operand1El.textContent = result;
+  } else if (multipleOperationInd == 0 && currentOperand == 1) {
+    operand1El.textContent = operand1;
+  }
+  if (operator) {
+    operatorEl.textContent = operator;
+  }
+  if (currentOperand == 2) {
+    operand2El.textContent = operand2;
+  }
 };
 //displayInput
 //Display Screen-2 results
 const displayResult = (ip) => {
+  if (!ip) {
+    screenResultEl.textContent = 0;
+    return;
+  }
   screenResultEl.textContent = ip;
+};
+
+const handleMultipleOperation = (op) => {
+  let multipleOperationInd = 1;
+  operand1 = result;
+  operand2 = "";
+  operator = op.textContent;
+  displayOperation(multipleOperationInd);
+  result = "";
+  currentOperand = 2;
+  displayResult(result);
 };
 
 //Assign Operator
 const assignOperator = (op) => {
   if (op.textContent === "=") {
-    // operand1 = result;
-    displayOperation();
     calculate();
     displayResult(result);
     return;
   }
-  console.log(result !== "");
   if (result !== "") {
-    console.log(result);
-    operand1 = result;
-    operand2 = "";
-    console.log(operand1 + operator);
-    operator = op.textContent;
-
-    operation = operand1 + operator;
-    operator = op.textContent;
-    displayOperation();
-    currentOperand = 2;
-
-    result = "";
-    displayResult(result);
+    handleMultipleOperation(op);
     return;
   }
   operator = op.textContent;
-  operation = operation + operator;
-  console.log(operation);
   displayOperation();
   currentOperand = 2;
 };
@@ -68,17 +78,20 @@ const assignOperand = (input) => {
   if (currentOperand === 1) {
     operand1 = operand1 + input.textContent;
     operation = operation + input.textContent;
+    displayOperation();
     displayResult(operand1);
   }
   if (currentOperand == 2) {
     operand2 = operand2 + input.textContent;
     operation = operation + input.textContent;
-
+    displayOperation();
     displayResult(operand2);
   }
 };
 // Delete a digit
-const deleteDigit = () => {};
+const deleteDigit = () => {
+  console.log("delete");
+};
 
 // Reset Screen
 const clearScreen = () => {
@@ -88,11 +101,13 @@ const clearScreen = () => {
   operand2 = "";
   operator = "";
   currentOperand = 1;
-  displayOperation();
+  operand1El.textContent = "";
+  operand2El.textContent = "";
+  operatorEl.textContent = "";
   displayResult(0);
 };
 
-// Mathematical Functions
+//Basic Mathematical Functions
 const add = (operand1, operand2) => {
   let op1 = Number(operand1);
   let op2 = Number(operand2);
@@ -143,29 +158,26 @@ const calculate = () => {
 //Check Input - if digit or operation
 
 const handleInput = (currInput) => {
-  const inputType = currInput.target;
-  const classes = Array.from(inputType.classList);
-  console.log(classes);
-  if (classes.includes("clear")) {
-    console.log("Hello");
+  const currentElement = currInput.target;
+  const clickedElementClass = Array.from(currentElement.classList);
+  if (clickedElementClass.includes("delete")) {
+    console.log("Delete");
+    return;
+  }
+  if (clickedElementClass.includes("clear")) {
     clearScreen();
     return;
   }
-  if (inputType.dataset.value == "operator") {
-    assignOperator(inputType);
+  if (currentElement.dataset.value == "operator") {
+    assignOperator(currentElement);
   } else {
-    assignOperand(currInput.target);
+    assignOperand(currentElement);
   }
 };
 
 // Key Press
-
 const keyPressHandler = (e) => {
-  //   const input = e.target.textContent;
-  // if (e.target.classList.includes('root'))
-  // {
-  //     console.log('Root');
-  //     }
+  //This is to make sure no events are fired upon clikcing the space between the keys.
   if (e.target.classList[0] === "keypad") {
     return;
   }
@@ -173,6 +185,4 @@ const keyPressHandler = (e) => {
 };
 
 // Event Listeners
-
 keysBtn.addEventListener("click", keyPressHandler);
-// clearBtn.addEventListener("click", clearScreen);
