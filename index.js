@@ -23,7 +23,7 @@ const keysBtn = document.querySelector(".keypad");
 //multipleOperationInd is there when more than 1 operations are being performed
 const displayOperation = (multipleOperationInd = 0) => {
   if (multipleOperationInd == 1) {
-    console.log(result);
+    console.log("This", result);
     operand1El.textContent = result;
   } else if (multipleOperationInd == 0 && currentOperand == 1) {
     operand1El.textContent = operand1;
@@ -42,6 +42,7 @@ const displayResult = (ip) => {
     screenResultEl.textContent = 0;
     return;
   }
+  console.log(ip);
   screenResultEl.textContent = ip;
 };
 
@@ -87,10 +88,6 @@ const assignOperand = (input) => {
     displayOperation();
     displayResult(operand2);
   }
-};
-// Delete a digit
-const deleteDigit = () => {
-  console.log("delete");
 };
 
 // Reset Screen
@@ -155,13 +152,36 @@ const calculate = () => {
   }
 };
 
+// Delete a digit
+const deleteDigit = () => {
+  if (currentOperand == 1) {
+    let modifiedStr = screenResultEl.textContent.slice(
+      0,
+      screenResultEl.textContent.length - 1
+    );
+    displayResult(modifiedStr);
+    operand1 = modifiedStr;
+    displayOperation();
+  } else {
+    console.log(screenResultEl.textContent);
+    let modifiedStr = screenResultEl.textContent.slice(
+      0,
+      screenResultEl.textContent.length - 1
+    );
+    displayResult(modifiedStr);
+    operand2 = modifiedStr;
+    displayOperation();
+  }
+  return;
+};
+
 //Check Input - if digit or operation
 
 const handleInput = (currInput) => {
   const currentElement = currInput.target;
   const clickedElementClass = Array.from(currentElement.classList);
   if (clickedElementClass.includes("delete")) {
-    console.log("Delete");
+    deleteDigit();
     return;
   }
   if (clickedElementClass.includes("clear")) {
