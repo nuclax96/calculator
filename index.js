@@ -79,6 +79,8 @@ const assignOperand = (input) => {
   if (currentOperand === 1) {
     operand1 = operand1 + input.textContent;
     operation = operation + input.textContent;
+    console.log(operand1, operation);
+
     displayOperation();
     displayResult(operand1);
   }
@@ -177,7 +179,18 @@ const deleteDigit = () => {
 
 //Check Input - if digit or operation
 
-const handleInput = (currInput) => {
+const handleInput = (currInput, source, type) => {
+  if (source == "keyboard" && type == "operand") {
+    const obj = { textContent: currInput };
+    assignOperand(obj);
+    return;
+  }
+  if (source == "keyboard" && type == "operator") {
+    const obj = { textContent: currInput };
+    assignOperator(obj);
+    return;
+  }
+
   const currentElement = currInput.target;
   const clickedElementClass = Array.from(currentElement.classList);
   if (clickedElementClass.includes("delete")) {
@@ -196,7 +209,7 @@ const handleInput = (currInput) => {
 };
 
 // Key Press
-const keyPressHandler = (e) => {
+const btnClickHandler = (e) => {
   //This is to make sure no events are fired upon clikcing the space between the keys.
   if (e.target.classList[0] === "keypad") {
     return;
@@ -205,4 +218,16 @@ const keyPressHandler = (e) => {
 };
 
 // Event Listeners
-keysBtn.addEventListener("click", keyPressHandler);
+keysBtn.addEventListener("click", btnClickHandler);
+window.addEventListener("keydown", (e) => {
+  if (e.key.match(/[0-9]/g)) {
+    handleInput(e.key, "keyboard", "operand");
+    // console.log(e);
+  }
+  if (e.key.match(/[+*-/]/g)) {
+    handleInput(e.key, "keyboard", "operator");
+  }
+  if (e.key == "Enter") {
+    handleInput("=", "keyboard", "operator");
+  }
+});
